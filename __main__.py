@@ -3,10 +3,9 @@ from methods import durand
 import numpy as np
 from numpy.polynomial import Polynomial as Poly
 
-
+print(np.cumsum([1, 2, 3, 4]))
 p = Poly([-3, 4, 4, 2], domain=[0, 1], window=[0, 1])
 
-# print(p)
 r = durand.roots(p)
 print(r)
 print(p.roots())

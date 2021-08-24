@@ -19,5 +19,5 @@ def roots(p: Poly, rtol: float = 0, atol: float = 0):
         for i, z in enumerate(r):
             dr[i] = -p(z) / np.prod(z - np.delete(r, i))
         r = r + dr
-    return np.sort(r)
+    return r
 
