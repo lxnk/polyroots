@@ -1,9 +1,7 @@
 import numpy as np
-from itertools import tee
 
 
 def sort_roots(r):
-    # TODO: still mixes the other roots (1e-3 case)
     delta = np.max(np.abs(r))
     for i, z in enumerate(r):
         delta = min(delta, np.min(np.abs(z - np.delete(r, i))))
@@ -13,3 +11,7 @@ def sort_roots(r):
                 np.imag(r[i+1]) < 0:
             r[[i, i+1]] = r[[i+1, i]]
     return r
+
+
+def tol(t, rtol=0, atol=0):
+    return np.maximum(atol + rtol * t, np.spacing(t))
