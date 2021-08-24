@@ -22,4 +22,4 @@ def roots(p: Poly, x: float, d: int = 1, abstol: float = eps, reltol: float = 0)
     while np.abs(dx) >= tol(np.abs(x)):
         dx = pd1(x) / pd(x)
         x = x + dx
-    return x, itr
+    return x
