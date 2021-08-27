@@ -8,7 +8,7 @@ def sort_roots(r):
     r = np.sort(r)
     for i, _ in enumerate(r[::-2]):
         if np.abs(r[i]-r[i+1].conj()) < delta and \
-                np.imag(r[i+1]) < 0:
+                r[i+1].imag < 0:
             r[[i, i+1]] = r[[i+1, i]]
     return r
 

@@ -1,6 +1,14 @@
 # -*- coding: utf-8 -*-
 """Householder's (extended Newton's) method
 https://en.wikipedia.org/wiki/Householder%27s_method
+
+Halley's method (d=2, fastest for the polynomials)
+https://en.wikipedia.org/wiki/Halley%27s_method
+
+Newton's method (d=1, stable, best for the arbitrary functions)
+https://en.wikipedia.org/wiki/Newton%27s_method
+
+See https://en.wikipedia.org/wiki/Householder%27s_method#Method for details
 """
 
 from numpy.polynomial import Polynomial as Poly

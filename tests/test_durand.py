@@ -14,13 +14,11 @@ def poly(request):
 
 def test_roots(poly):
     r = durand.roots(poly)
-    nt.assert_allclose(np.sort(r), poly.roots())
+    nt.assert_array_almost_equal_nulp(np.sort(r), poly.roots(), 7)
 
 
 @pytest.mark.parametrize("rtol,atol", [(1e-3, 1e-3), (1e-6, 1e-6)], ids=["e-3", "e-7"])
 def test_roots_tol(poly, rtol, atol):
     r = durand.roots(poly, rtol=rtol, atol=atol)
-    rp = poly.roots()
-    sr = utils.sort_roots(r)
-    srp = np.sort_complex(rp)
-    nt.assert_allclose(sr, srp, rtol=rtol, atol=atol)
+    nt.assert_allclose(utils.sort_roots(r),
+                       np.sort_complex(poly.roots()), rtol=rtol, atol=atol)
