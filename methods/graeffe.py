@@ -5,7 +5,7 @@ https://en.wikipedia.org/wiki/Graeffe%27s_method
 
 from numpy.polynomial import Polynomial as Poly
 import numpy as np
-
+import utils
 
 def dgiteration(p: Poly):
     """Dandelin–Graeffe iteration
@@ -44,10 +44,15 @@ def roots_classical(p: Poly, d: int):
         q.append(dgiteration(q[i]))
     r = -q[-1].coef[:-1] / q[-1].coef[1:]
 
+    if __debug__:
+        utils.show_roots(r, q[-1])
+
     for i in range(d-1,-1,-1):
         r = np.lib.scimath.sqrt(r)
         c = np.abs(q[i](-r)) < np.abs(q[i](r))
         r[c] *= -1
+        if __debug__:
+            utils.show_roots(r, q[i])
     return r
 
 

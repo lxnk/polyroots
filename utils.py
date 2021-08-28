@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def sort_roots(r):
@@ -15,3 +16,18 @@ def sort_roots(r):
 
 def tol(t, rtol=0, atol=0):
     return np.maximum(atol + rtol * t, np.spacing(t))
+
+
+def show_roots(r, p):
+    _, ax = plt.subplots()
+    xmin, xmax = (min(r.real), max(r.real))
+    xmin -= 0.05 * (xmax - xmin)
+    xmax += 0.05 * (xmax - xmin)
+    x = np.linspace(xmin, xmax)
+    ax.plot(x, p(x), '-')
+    rr = p.roots()
+    ax.plot(rr.real, np.real(p(rr)), 'o')
+    ax.plot(r.real, np.real(p(r)), 'x')
+    ax.spines['bottom'].set_position('zero')
+    ax.set_yscale('linear')
+    plt.show()
