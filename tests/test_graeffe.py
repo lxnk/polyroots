@@ -12,7 +12,7 @@ def polyc(request):
     """Create polynomial out of the coefficients"""
     return Poly(request.param, domain=[0, 1], window=[0, 1])
 
-@pytest.fixture(params=[(-3, 4, 3, 2)], ids=["r-3432"])
+@pytest.fixture(params=[(-3, 4, 5, 2)], ids=["r-3432"])
 def polyr(request):
     """Create polynomial out of the coefficients"""
     return Poly(pl.polyfromroots(request.param), domain=[0, 1], window=[0, 1])
@@ -34,9 +34,9 @@ def test_roots_classical(polyc):
     #                    np.sort_complex(poly.roots()), rtol=1e-2)
 
 
-def test_roots_classical2(polyr):
+def test_roots_classical_real_roots(polyr):
     polyr.coef /= polyr.coef[polyr.degree()]
-    r = graeffe.roots_classical(polyr, 7)
+    r = graeffe.roots_classical(polyr, 3)
     print('\n', utils.sort_roots(r),
           '\n', np.sort_complex(polyr.roots()))
     # nt.assert_allclose(utils.sort_roots(r),

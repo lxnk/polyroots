@@ -21,13 +21,17 @@ def tol(t, rtol=0, atol=0):
 def show_roots(r, p):
     _, ax = plt.subplots()
     xmin, xmax = (min(r.real), max(r.real))
-    xmin -= 0.05 * (xmax - xmin)
-    xmax += 0.05 * (xmax - xmin)
+    xmin -= 0.1 * (xmax - xmin)
+    xmax += 0.1 * (xmax - xmin)
     x = np.linspace(xmin, xmax)
     ax.plot(x, p(x), '-')
-    rr = p.roots()
-    ax.plot(rr.real, np.real(p(rr)), 'o')
     ax.plot(r.real, np.real(p(r)), 'x')
+    for z in r:
+        if z.imag != 0:
+            x = np.linspace(0, 1.2*z.imag)
+            ax.plot(x+z.real, np.real(p(z.real+x*1j)), '--',
+                    x+z.real, np.imag(p(z.real+x*1j)), ':')
+        ax.plot(z.imag+z.real, 0, '+')
     ax.spines['bottom'].set_position('zero')
     ax.set_yscale('linear')
     plt.show()

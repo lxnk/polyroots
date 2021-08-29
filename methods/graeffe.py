@@ -46,8 +46,9 @@ def roots_classical(p: Poly, d: int):
 
     if __debug__:
         utils.show_roots(r, q[-1])
+        # utils.show_roots(q[-1].roots(), q[-1])
 
-    for i in range(d-1,-1,-1):
+    for i in range(d-1, -1, -1):
         r = np.lib.scimath.sqrt(r)
         c = np.abs(q[i](-r)) < np.abs(q[i](r))
         r[c] *= -1
