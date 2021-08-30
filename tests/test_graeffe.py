@@ -7,17 +7,19 @@ from methods import graeffe
 import utils
 
 
-@pytest.fixture(params=[(-3, 4, 4, 2)], ids=["c-3442"])
+@pytest.fixture(params=[(-3, 4, -4, 2)], ids=["c-3442"])
 def polyc(request):
     """Create polynomial out of the coefficients"""
     return Poly(request.param, domain=[0, 1], window=[0, 1])
 
+
 @pytest.fixture(params=[(-3, 4, 5, 2)], ids=["r-3432"])
 def polyr(request):
-    """Create polynomial out of the coefficients"""
+    """Create polynomial out of the real roots"""
     return Poly(pl.polyfromroots(request.param), domain=[0, 1], window=[0, 1])
 
-def test_dgiteration(polyc):
+
+def test_dgiteration(polyr):
     pp = polyc.copy()
     pp.coef[1::2] *= -1
     pp = pp * polyc
@@ -25,30 +27,21 @@ def test_dgiteration(polyc):
     nt.assert_array_equal(pp.coef[::2], pg.coef)
 
 
-def test_roots_classical(polyc):
-    polyc.coef /= polyc.coef[polyc.degree()]
-    r = graeffe.roots_classical(polyc, 7)
-    print('\n', utils.sort_roots(r),
-          '\n', np.sort_complex(polyc.roots()))
-    # nt.assert_allclose(utils.sort_roots(r),
-    #                    np.sort_complex(poly.roots()), rtol=1e-2)
-
-
 def test_roots_classical_real_roots(polyr):
     polyr.coef /= polyr.coef[polyr.degree()]
     r = graeffe.roots_classical(polyr, 3)
     print('\n', utils.sort_roots(r),
           '\n', np.sort_complex(polyr.roots()))
-    # nt.assert_allclose(utils.sort_roots(r),
-    #                    np.sort_complex(poly.roots()), rtol=1e-2)
+    nt.assert_allclose(utils.sort_roots(r),
+                       np.sort_complex(polyr.roots()), rtol=3e-2)
 
 
-def test_roots_tangential(polyc):
-    polyc.coef /= polyc.coef[polyc.degree()]
-    r = graeffe.roots_tangential(polyc, 5, 1e-2 * (1 + 0.1j))
+def test_roots_tangential(polyr):
+    polyr.coef /= polyr.coef[polyr.degree()]
+    r = graeffe.roots_tangential(polyr, 5, 1e-3)
     print('\n', utils.sort_roots(r),
-          '\n', np.sort_complex(polyc.roots()))
-    # nt.assert_allclose(utils.sort_roots(r),
-    #                    np.sort_complex(poly.roots()), rtol=1e-2)
+          '\n', np.sort_complex(polyr.roots()))
+    nt.assert_allclose(utils.sort_roots(r),
+                       np.sort_complex(polyr.roots()), rtol=3e-2)
 
 

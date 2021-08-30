@@ -39,25 +39,28 @@ def dgiteration(p: Poly):
 
 
 def roots_classical(p: Poly, d: int):
+    # TODO: process with complex roots
     q = [p]
     for i in range(d):
         q.append(dgiteration(q[i]))
     r = -q[-1].coef[:-1] / q[-1].coef[1:]
-
-    if __debug__:
-        utils.show_roots(r, q[-1])
-        # utils.show_roots(q[-1].roots(), q[-1])
-
+    # if __debug__:
+    #     utils.show_roots(r, q[-1])
+    # print(r,'\n')
     for i in range(d-1, -1, -1):
         r = np.lib.scimath.sqrt(r)
         c = np.abs(q[i](-r)) < np.abs(q[i](r))
+        # print(r)
+        # print(np.abs(q[i](r)))
+        # print(np.abs(q[i](-r)), '\n')
         r[c] *= -1
-        if __debug__:
-            utils.show_roots(r, q[i])
+        # if __debug__:
+        #     utils.show_roots(r, q[i])
     return r
 
 
-def roots_tangential(p: Poly, d: int, eps: float=1e-5):
+def roots_tangential(p: Poly, d: int, eps: float = 1e-5):
+    # TODO: process with complex roots
     pe = p+eps * p.deriv()
     for i in range(d):
         p = dgiteration(p)
@@ -66,4 +69,3 @@ def roots_tangential(p: Poly, d: int, eps: float=1e-5):
     re = -pe.coef[:-1]/pe.coef[1:]
     r = -2**d*eps*r/(re-r)
     return r
-

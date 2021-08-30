@@ -29,8 +29,8 @@ def show_roots(r, p):
     for z in r:
         if z.imag != 0:
             x = np.linspace(0, 1.2*z.imag)
-            ax.plot(x+z.real, np.real(p(z.real+x*1j)), '--',
-                    x+z.real, np.imag(p(z.real+x*1j)), ':')
+            ax.plot(x+z.real, np.real(p(z.real+x*1j)), '-',
+                    x+z.real, np.imag(p(z.real+x*1j)), '-')
         ax.plot(z.imag+z.real, 0, '+')
     ax.spines['bottom'].set_position('zero')
     ax.set_yscale('linear')
