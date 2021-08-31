@@ -1,6 +1,13 @@
 # -*- coding: utf-8 -*-
-"""Continued fraction method.
+"""
+Vincent's and related theorems
+https://en.wikipedia.org/wiki/Real-root_isolation#Vincent's_and_related_theorems
+
+Continued fraction method.
 https://en.wikipedia.org/wiki/Real-root_isolation#Continued_fraction_method
+
+Bisection method.
+https://en.wikipedia.org/wiki/Real-root_isolation#Bisection_method
 """
 from numpy.polynomial import Polynomial as Poly
 import numpy as np
@@ -12,7 +19,8 @@ def sign_var_num(p: Poly):
     return sum(c[:-1]*c[1:] < 0)
 
 
-def root_intervals(p: Poly):
+def root_intervals_cfrac(p: Poly):
+    """Continued fraction method"""
     poly_ival = [(p, np.array((1, 0, 0, 1))), (p(Poly([0, -1])), np.array((-1, 0, 0, 1)))]
     isol_ival = []
     # utils.show_roots(np.array([0, 6]), p)
@@ -42,4 +50,25 @@ def root_intervals(p: Poly):
             a.coef = a.coef[::-1]
             a = a(Poly((1, 1)))
             poly_ival.append((a, (m[1], m[0]*s+m[1], m[3], m[2]*s+m[3])))
+    return isol_ival
+
+
+def root_intervals_bisection(p: Poly, c: float = 0):
+    """Bisection method"""
+    poly_ival = [(c, 0, p)]
+    isol_ival = []
+    while poly_ival:
+        c, k, q = poly_ival[-1]
+        poly_ival.pop()
+        if q(0) == 0:
+            q = q // Poly((0, 1))
+            isol_ival.append((2**(-k)*c,2**(-k)*c))
+        a = q.copy()
+        a.coef = a.coef[::-1]
+        v = sign_var_num(a(Poly((1,1))))
+        if v == 1:
+            isol_ival.append((2**(-k)*c,2**(-k)*(c+1)))
+        elif v > 1:
+            poly_ival.append((2*c, k+1, 2**q.degree() * q(Poly((0, 1/2)))))
+            poly_ival.append((2*c + 1, k+1, 2**q.degree() * q(Poly((1/2, 1/2)))))
     return isol_ival
