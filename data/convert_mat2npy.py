@@ -7,8 +7,8 @@ with open('polydata.npy', 'wb') as f:
         m = mat['Poly'+str(n)][0]
         dat = np.zeros(len(m), dtype=[('coef', 'f8', n+1), ('root', 'c16', n)])
         for i in range(len(m)):
-            dat[i][0] = m[i][0][:,0]
-            dat[i][1] = m[i][1][:,0]
+            dat[i][0] = m[i][0][::-1,0]
+            dat[i][1] = m[i][1][::-1,0]
         np.save(f, dat)
 
 
