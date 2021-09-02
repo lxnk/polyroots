@@ -11,8 +11,6 @@ https://en.wikipedia.org/wiki/Real-root_isolation#Bisection_method
 """
 from numpy.polynomial import Polynomial as Poly
 import numpy as np
-import utils
-
 
 def sign_var_num(p: Poly):
     c = p.coef[p.coef != 0]
@@ -20,10 +18,10 @@ def sign_var_num(p: Poly):
 
 
 def root_intervals_cfrac(p: Poly):
-    """Continued fraction method"""
+    """Continued fraction method
+    Starts from intervals [-inf..0] and [0..+inf]"""
     poly_ival = [(p, np.array((1, 0, 0, 1))), (p(Poly([0, -1])), np.array((-1, 0, 0, 1)))]
     isol_ival = []
-    # utils.show_roots(np.array([0, 6]), p)
     while poly_ival:
         a, m = poly_ival[-1]
         poly_ival.pop()
@@ -35,7 +33,6 @@ def root_intervals_cfrac(p: Poly):
             continue
         s = 1
         b = a(Poly((s,1)))
-        # utils.show_roots(np.array([0, 6]), b)
         w = v - sign_var_num(b)
         if b(0) == 0:
             isol_ival.append(((m[0]*s+m[1])/(m[2]*s+m[3]), (m[0]*s+m[1])/(m[2]*s+m[3])))
@@ -54,7 +51,8 @@ def root_intervals_cfrac(p: Poly):
 
 
 def root_intervals_bisection(p: Poly, c: float = 0):
-    """Bisection method"""
+    """Bisection method
+    Starts from the interval [0..1]"""
     poly_ival = [(c, 0, p)]
     isol_ival = []
     while poly_ival:
