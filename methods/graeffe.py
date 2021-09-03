@@ -3,9 +3,7 @@
 https://en.wikipedia.org/wiki/Graeffe%27s_method
 """
 
-from numpy.polynomial import Polynomial as Poly
-import numpy as np
-import utils
+from . import *
 
 def dgiteration(p: Poly):
     """Dandelin–Graeffe iteration

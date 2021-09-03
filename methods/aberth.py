@@ -3,9 +3,7 @@
 https://en.wikipedia.org/wiki/Aberth_method
 """
 
-from numpy.polynomial import Polynomial as Poly
-import numpy as np
-from utils import tol
+from . import *
 
 
 def roots(p: Poly, rtol: float = 0, atol: float = 0):

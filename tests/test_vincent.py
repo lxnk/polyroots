@@ -1,11 +1,11 @@
-import pytest
-import numpy.testing as nt
-from numpy.polynomial import Polynomial as Poly
+# -*- coding: utf-8 -*-
+
+from . import *
 from numpy.polynomial import polynomial as pl
 from methods import vincent
 
 
-@pytest.fixture(params=[(-3, 4, 4, 2)], ids=["c-++-"])
+@pytest.fixture(params=[(-3, 4, -4, 2)], ids=["c-+-+"])
 def polyc(request):
     """Create polynomial out of the coefficients"""
     return Poly(request.param, domain=[0, 1], window=[0, 1])
@@ -31,3 +31,4 @@ def test_root_intervals_cfrac(polyr):
 def test_root_intervals_bisection(polyr):
     iv = vincent.root_intervals_bisection(polyr)
     print('\n', iv, '<->', polyr.roots())
+

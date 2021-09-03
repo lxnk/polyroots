@@ -9,8 +9,9 @@ https://en.wikipedia.org/wiki/Real-root_isolation#Continued_fraction_method
 Bisection method.
 https://en.wikipedia.org/wiki/Real-root_isolation#Bisection_method
 """
-from numpy.polynomial import Polynomial as Poly
-import numpy as np
+
+from . import *
+
 
 def sign_var_num(p: Poly):
     c = p.coef[p.coef != 0]
@@ -50,7 +51,7 @@ def root_intervals_cfrac(p: Poly):
     return isol_ival
 
 
-def root_intervals_bisection(p: Poly, c: float = 0):
+def root_intervals_bisection(p: Poly, c: float = 0) -> list:
     """Bisection method
     Starts from the interval [0..1]"""
     poly_ival = [(c, 0, p)]

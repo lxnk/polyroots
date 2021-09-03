@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 import numpy.testing as nt
 import numpy as np
