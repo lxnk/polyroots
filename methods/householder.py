@@ -14,7 +14,8 @@ See https://en.wikipedia.org/wiki/Householder%27s_method#Method for details
 from . import *
 
 
-def roots(p: Poly, r: float, d: int = 1, rtol: float = 0, atol: float = 0) -> np.array:
+def roots(p: Poly, r: np.array, d: int = 1, rtol: float = 0, atol: float = 0) -> np.array:
+    r = np.array(r)
     pd1 = i = 1
     pd = -p.deriv()
     while i < d:
@@ -23,7 +24,7 @@ def roots(p: Poly, r: float, d: int = 1, rtol: float = 0, atol: float = 0) -> np
         pd = pd.deriv() * p - i * pd * p.deriv()
     pd1 = d * p * pd1
     dr = tol(np.abs(r), rtol, atol)
-    while np.abs(dr) >= tol(np.abs(r), rtol, atol):
+    while np.any(np.abs(dr) >= tol(np.abs(r), rtol, atol)):
         dr = pd1(r) / pd(r)
         r = r + dr
     return r
