@@ -5,30 +5,35 @@ from numpy.polynomial import polynomial as pl
 from methods import vincent
 
 
-@pytest.fixture(params=[(-3, 4, -4, 2)], ids=["c-+-+"])
+@pytest.fixture
 def polyc(request):
     """Create polynomial out of the coefficients"""
     return Poly(request.param, domain=[0, 1], window=[0, 1])
 
 
-@pytest.fixture(params=[(-.3, .49, .52, .21)], ids=["r-3432"])
+@pytest.fixture(params=[(-.6, -.3, .49, .52, .21)], ids=["r-3432"])
 def polyr(request):
     """Create polynomial out of the real roots"""
     return Poly(pl.polyfromroots(request.param), domain=[0, 1], window=[0, 1])
 
-
-def test_sign_var_num(polyc):
+@pytest.mark.parametrize("polyc, num", [((-3, 4, -4, 2), 3)], indirect=["polyc"], ids=["c-+-+"])
+def test_sign_var_num(polyc, num):
     n = vincent.sign_var_num(polyc)
-    print(n)
-    nt.assert_equal(n, 3)
+    nt.assert_equal(n, num)
 
 
 def test_root_intervals_cfrac(polyr):
     iv = vincent.root_intervals_cfrac(polyr)
-    print('\n', iv, '<->', polyr.roots())
+    r = polyr.roots()
+    # print('\n', iv, '<->', r)
+    for a, b in iv:
+        nt.assert_equal(len(r[(r >= a) & (r <= b)]), 1)
 
 
 def test_root_intervals_bisection(polyr):
     iv = vincent.root_intervals_bisection(polyr)
-    print('\n', iv, '<->', polyr.roots())
+    r = polyr.roots()
+    # print('\n', iv, '<->', polyr.roots())
+    for a, b in iv:
+        nt.assert_equal(len(r[(r >= a) & (r <= b)]), 1)
 

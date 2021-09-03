@@ -28,14 +28,14 @@ def test_dgiteration(polyc):
 def test_roots_classical_real_roots(polyr):
     polyr.coef /= polyr.coef[polyr.degree()]
     r = graeffe.roots_classical(polyr, 3)
-    print('\n', sort_roots(r), '\n', sort_roots(polyr.roots()))
+    # print('\n', sort_roots(r), '\n', sort_roots(polyr.roots()))
     nt.assert_allclose(sort_roots(r), sort_roots(polyr.roots()), rtol=3e-2)
 
 
 def test_roots_tangential(polyr):
     polyr.coef /= polyr.coef[polyr.degree()]
     r = graeffe.roots_tangential(polyr, 5, 1e-3)
-    print('\n', sort_roots(r), sort_roots(polyr.roots()))
+    # print('\n', sort_roots(r), sort_roots(polyr.roots()))
     nt.assert_allclose(sort_roots(r), sort_roots(polyr.roots()), rtol=3e-2)
 
 

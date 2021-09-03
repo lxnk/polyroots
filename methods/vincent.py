@@ -23,6 +23,9 @@ def root_intervals_cfrac(p: Poly):
     Starts from intervals [-inf..0] and [0..+inf]"""
     poly_ival = [(p, np.array((1, 0, 0, 1))), (p(Poly([0, -1])), np.array((-1, 0, 0, 1)))]
     isol_ival = []
+    sort_ival = lambda a, b: (a, b) if a < b else (b, a)
+    # In first iteration division over zero takes place
+    np_settings = np.seterr(divide="ignore")
     while poly_ival:
         a, m = poly_ival[-1]
         poly_ival.pop()
@@ -30,24 +33,27 @@ def root_intervals_cfrac(p: Poly):
         if v == 0:
             continue
         elif v == 1:
-            isol_ival.append((m[1]/m[3], m[0]/m[2]))
+            # In first iteration _here_ division over zero takes place
+            isol_ival.append(sort_ival(m[1]/m[3], m[0]/m[2]))
             continue
         s = 1
         b = a(Poly((s,1)))
         w = v - sign_var_num(b)
         if b(0) == 0:
-            isol_ival.append(((m[0]*s+m[1])/(m[2]*s+m[3]), (m[0]*s+m[1])/(m[2]*s+m[3])))
+            isol_ival.append(sort_ival((m[0]*s+m[1])/(m[2]*s+m[3]), (m[0]*s+m[1])/(m[2]*s+m[3])))
             b = b // Poly((0,1))
-        poly_ival.append((b,(m[0], m[0]*s+m[1], m[2], m[2]*s+m[3])))
+        poly_ival.append((b, (m[0], m[0]*s+m[1], m[2], m[2]*s+m[3])))
         if w == 0:
             pass
         elif w == 1:
-            isol_ival.append((m[1]/m[3], (m[0]*s+m[1])/(m[2]*s+m[3])))
+            isol_ival.append(sort_ival(m[1]/m[3], (m[0]*s+m[1])/(m[2]*s+m[3])))
         else:
             a = a(Poly((0, s)))
             a.coef = a.coef[::-1]
             a = a(Poly((1, 1)))
             poly_ival.append((a, (m[1], m[0]*s+m[1], m[3], m[2]*s+m[3])))
+    # Restore errors setting
+    np.seterr(**np_settings)
     return isol_ival
 
 
