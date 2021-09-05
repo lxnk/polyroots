@@ -5,9 +5,10 @@ https://en.wikipedia.org/wiki/Graeffe%27s_method
 
 from . import *
 
+
 def dgiteration(p: Poly):
     """Dandelin–Graeffe iteration
-    Polynomial q(x) has root, which are the squares of the roots of polynomial p(x)
+    Polynomial `q(x)` has root, which are the squares of the roots of polynomial `p(x)`
 
     .. math::
         p(x)   = \\sum_{k=0} ^n a_k x^k

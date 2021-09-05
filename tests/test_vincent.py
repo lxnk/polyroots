@@ -16,6 +16,7 @@ def polyr(request):
     """Create polynomial out of the real roots"""
     return Poly(pl.polyfromroots(request.param), domain=[0, 1], window=[0, 1])
 
+
 @pytest.mark.parametrize("polyc, num", [((-3, 4, -4, 2), 3)], indirect=["polyc"], ids=["c-+-+"])
 def test_sign_var_num(polyc, num):
     n = vincent.sign_var_num(polyc)
