@@ -13,8 +13,11 @@ def roots(p: Poly, r: np.array, rtol: float = 0, atol: float = 0) -> np.array:
     n = p.degree()
     dr = tol(np.abs(r), rtol, atol)
     while np.any(np.abs(dr) >= tol(np.abs(r), rtol, atol)):
-        g = pd(r) / p(r)
+        f = p(r)
+        g = pd(r)
         h = g**2 - pdd(r) / p(r)
-        dr = - n /(g + np.sqrt((n-1)*(n*h - g**2))*np.sign(g))
+        s = np.sqrt((n-1)*((n-1)*g**2 - n*pdd(r)*f))
+        dd = np.abs(g+s) < np.abs(g-s)
+        dr = - n * f / (g + (-1)**dd * s)
         r = r + dr
     return r
