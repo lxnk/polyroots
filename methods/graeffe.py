@@ -6,6 +6,8 @@ https://en.wikipedia.org/wiki/Graeffe%27s_method
 from . import *
 
 
+# TODO: Estimate multiplicity
+
 def dgiteration(p: Poly):
     """Dandelin–Graeffe iteration
     Polynomial `q(x)` has root, which are the squares of the roots of polynomial `p(x)`

@@ -5,6 +5,7 @@ from numpy.polynomial import polynomial as pl
 from methods import graeffe
 from utils import sort_roots
 
+
 @pytest.fixture(params=[(-3, 4, -4, 2)], ids=["c-3442"])
 def polyc(request):
     """Create polynomial out of the coefficients"""
