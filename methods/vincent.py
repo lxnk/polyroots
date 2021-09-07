@@ -57,23 +57,24 @@ def root_intervals_cfrac(p: Poly):
     return isol_ival
 
 
-def root_intervals_bisection(p: Poly, c: float = 0) -> list:
+def root_intervals_bisection(p: Poly, iv: tuple = (0, 1)) -> list:
     """Bisection method
     Starts from the interval [0..1]"""
-    poly_ival = [(c, 0, p)]
+    a, b = iv
+    poly_ival = [(*iv, p(Poly([a, b-a])))]
     isol_ival = []
     while poly_ival:
-        c, k, q = poly_ival[-1]
+        a, b, q = poly_ival[-1]
         poly_ival.pop()
         if q(0) == 0:
             q = q // Poly((0, 1))
-            isol_ival.append((2**(-k)*c,2**(-k)*c))
-        a = q.copy()
-        a.coef = a.coef[::-1]
-        v = sign_var_num(a(Poly((1,1))))
+            isol_ival.append((a, a))
+        iq = q.copy()
+        iq.coef = iq.coef[::-1]
+        v = sign_var_num(iq(Poly((1, 1))))
         if v == 1:
-            isol_ival.append((2**(-k)*c,2**(-k)*(c+1)))
+            isol_ival.append((a, b))
         elif v > 1:
-            poly_ival.append((2*c, k+1, 2**q.degree() * q(Poly((0, 1/2)))))
-            poly_ival.append((2*c + 1, k+1, 2**q.degree() * q(Poly((1/2, 1/2)))))
+            poly_ival.append((a, (a+b)/2, 2**q.degree() * q(Poly((0, 1/2))) ))
+            poly_ival.append(((a+b)/2, b, 2**q.degree() * q(Poly((1/2, 1/2))) ))
     return isol_ival
