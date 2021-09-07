@@ -41,18 +41,24 @@ def test_roots_tangential(polyr):
     nt.assert_allclose(sort_roots(r), sort_roots(polyr.roots()), rtol=3e-2)
 
 
-@pytest.mark.parametrize("a,b,c,d", [([3, -7, 0, -1, 5],
+@pytest.mark.parametrize("a,b,c,c2,d,d2", [([3, -7, 0, -1, 5],
                                       [.6, 1.4, 0, .2],
                                       [3 / 7, 7, 1 / 5],
-                                      [.6 ** (1 / 4), 1.4 ** (1 / 3), 0, .2]),
-                                     ([0, 4, -3, 0, 5, -2],
-                                      [0, 2, 1.5, 0, 2.5],
-                                      [4 / 3, 3 / 5, 5 / 2],
-                                      [0, 2 ** (1 / 4), 1.5 ** (1 / 3), 0, 2.5])], ids=["a5", "a6"])
-def test__abs_x(a, b, c, d):
-    nt.assert_array_equal(graeffe._abs_norm(np.array(a)), b)
-    nt.assert_array_equal(graeffe._abs_ratio(np.array(a)), c)
-    nt.assert_array_equal(graeffe._abs_norm_dim(np.array(a)), d)
+                                      [3 / 14, 7, 1 / 5],
+                                      [.6 ** (1 / 4), 1.4 ** (1 / 3), 0, .2],
+                                      [.3 ** (1 / 4), 1.4 ** (1 / 3), 0, .2]),
+                                     ([1, 0, 4, -3, 0, 5, -2],
+                                      [.5, 0, 2, 1.5, 0, 2.5],
+                                      [1/4, 4 / 3, 3 / 5, 5 / 2],
+                                      [1/8, 4 / 3, 3 / 5, 5 / 2],
+                                      [.5 ** (1 / 6), 0, 2 ** (1 / 4), 1.5 ** (1 / 3), 0, 2.5],
+                                      [.25 ** (1 / 6), 0, 2 ** (1 / 4), 1.5 ** (1 / 3), 0, 2.5])], ids=["a5", "a7"])
+def test__abs_x(a, b, c, c2, d, d2):
+    nt.assert_array_equal(graeffe._abs(graeffe._norm(np.array(a))), b)
+    nt.assert_array_equal(graeffe._abs(graeffe._ratio(np.array(a))), c)
+    nt.assert_array_equal(graeffe._abs(graeffe._half(graeffe._ratio(np.array(a)))), c2)
+    nt.assert_array_equal(graeffe._dim(graeffe._abs(graeffe._norm(np.array(a)))), d)
+    nt.assert_array_equal(graeffe._dim(graeffe._abs(graeffe._half(graeffe._norm(np.array(a))))), d2)
 
 
 def test_root_limit(polyr):
@@ -62,11 +68,31 @@ def test_root_limit(polyr):
         nt.assert_array_less(maxabsr, rlim)
 
 
+@pytest.mark.parametrize("polyc", [(3, 5, 5, 2000, 2),
+                                   (3, 5, 5, 2000, -5, 3),
+                                   (3, 5, -50, 2000, 70, 3)], indirect=["polyc"], ids=["ml1", "ml2", "ml3"])
+def test_real_root_limit(polyc):
+    re = np.sort(graeffe.roots_classical(polyc, 4, absval=True))
+    rr = polyc.roots()
+    r0 = np.max(np.sort(np.abs(rr)))
+    rr = np.max(np.sort(rr[rr.imag == 0].real))
+    # print(r0, rr)
+    # print(re, graeffe.root_limit(polyc, method="lagrange"))
+    nt.assert_array_less(re, graeffe.root_limit(polyc, method="lagrange"))
+
+    for m in graeffe._root_limit_formula:
+        rlim0 = graeffe.root_limit(polyc, method=m)
+        rlimr = graeffe.root_limit(polyc, method=m, rproots=True)
+        # print(m, '\t', rlim0, '\t', rlimr)
+        nt.assert_array_less(r0, rlim0)
+        nt.assert_array_less(rr, rlimr)
+
+
 def test_estimate_roots(polyr):
-    r = np.sort(graeffe.estimate_roots(polyr))
+    re= np.sort(graeffe.roots_classical(polyr, 4, absval=True))
     r0 = np.sort(np.abs(polyr.roots()))
-    print()
-    print(r0)
-    print(r, graeffe.root_limit(polyr, method="lagrange"))
-    nt.assert_allclose(r, r0, rtol=.5)
-    nt.assert_array_less(r, graeffe.root_limit(polyr, method="lagrange"))
+    # print()
+    # print(r0)
+    # print(re, graeffe.root_limit(polyr, method="lagrange"))
+    nt.assert_allclose(re, r0, rtol=.1)
+    nt.assert_array_less(re, graeffe.root_limit(polyr, method="lagrange"))
