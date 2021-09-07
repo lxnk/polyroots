@@ -24,6 +24,9 @@ def test_sign_var_num(polyc, num):
 
 
 def test_root_intervals_cfrac(polyr):
+    """Last data
+    [(-1, -1/2), (-1/2, 0.0), (1/2, 1), (1/3, 1/2), (0.0, 1/3)]
+    """
     iv = vincent.root_intervals_cfrac(polyr)
     r = polyr.roots()
     # print('\n', iv, '<->', r)
@@ -32,6 +35,9 @@ def test_root_intervals_cfrac(polyr):
 
 
 def test_root_intervals_bisection(polyr):
+    """Last data
+    [(1/2, 1), (1/4, 1/2), (0,1/4)]
+    """
     iv = vincent.root_intervals_bisection(polyr)
     r = polyr.roots()
     # print('\n', iv, '<->', polyr.roots())
