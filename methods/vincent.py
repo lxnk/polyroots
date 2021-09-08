@@ -20,6 +20,7 @@ https://en.wikipedia.org/wiki/Real-root_isolation#Bisection_method
 from . import *
 from methods.bounds import _ratio as coef_ratio
 
+
 def sign_var_num(p: Poly):
     # c = p.coef[p.coef != 0]
     # return sum(c[:-1]*c[1:] < 0)

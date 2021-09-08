@@ -15,8 +15,10 @@ def roots(p: Poly, r: np.array, rtol: float = 0, atol: float = 0) -> np.array:
     while np.any(np.abs(dr) >= tol(np.abs(r), rtol, atol)):
         f = p(r)
         g = pd(r)
-        h = g**2 - pdd(r) / p(r)
-        s = np.sqrt((n-1)*((n-1)*g**2 - n*pdd(r)*f))
+        # print("f=", f, "g=", g)
+        # print("den=", (n-1)*((n-1)*g**2 - n*pdd(r)*f))
+        s = np.lib.scimath.sqrt((n-1)*((n-1)*g**2 - n*pdd(r)*f))
+        # print("s=", s)
         dd = np.abs(g+s) < np.abs(g-s)
         dr = - n * f / (g + (-1)**dd * s)
         r = r + dr

@@ -15,6 +15,8 @@ print(len(p2), len(p2['coef']),
 print(len(p5), len(p5['coef']),
       len(p5[7]), len(p5[7]['coef']), len(p5['coef'][7]), len(p5['root'][7]))
 
+print(len(p2), len(p3), len(p4), len(p5), len(p6))
+
 pl = Poly(p4[7]['coef'])
 print(pl)
 print(pl.roots())

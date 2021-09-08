@@ -36,3 +36,8 @@ def show_roots(r, p):
     ax.spines['bottom'].set_position('zero')
     ax.set_yscale('linear')
     plt.show()
+
+
+def unique(a: np.array, rtol: float = 0, atol: float = 0):
+    test = np.abs(np.diff(a, prepend=np.inf)) >= tol(a, rtol=rtol, atol=atol)
+    return a[test]
