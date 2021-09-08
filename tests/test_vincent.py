@@ -11,10 +11,8 @@ def polyc(request):
     return Poly(request.param, domain=[0, 1], window=[0, 1])
 
 
-# @pytest.fixture(params=[(-.6, -.3, .49, .52, .21),
-#                         (.25, .5, .75, .9)], ids=["r-3432", "rquad"])
-# @pytest.fixture(params=[(.25, .5, .751, .9)], ids=["rquad"])
-@pytest.fixture(params=[(-.6, -.3, .49, .52, .21)], ids=["r-3432",])
+@pytest.fixture(params=[(-.6, -.3, .49, .52, .21),
+                        (.25, .5, .75, .9)], ids=["r-3432", "rquad"])
 def polyr(request):
     """Create polynomial out of the real roots"""
     return Poly(pl.polyfromroots(request.param), domain=[0, 1], window=[0, 1])
@@ -35,7 +33,7 @@ def test_root_intervals_cfrac(polyr):
     r = polyr.roots()
     # print('\n', iv, '<->', r)
     for a, b in iv:
-        nt.assert_equal(len(r[(r >= a) & (r < b)]), 1)
+        nt.assert_equal(len(r[(r > a) & (r <= b)]), 1)
 
 
 def test_root_intervals_bisection(polyr):
@@ -44,9 +42,9 @@ def test_root_intervals_bisection(polyr):
     [(7/8, 1), (3/4, 7/8), (3/8, 1/2), (1/4, 3/8)]
     TODO: check hitting the values
     """
-    iv = vincent.root_intervals_bisection(polyr, (0, 1))
+    iv = vincent.root_intervals_bisection(polyr, [(-1, 1)])
     r = polyr.roots()
-    print('\n', iv, '<->', polyr.roots())
+    # print('\n', iv, '<->', polyr.roots())
     for a, b in iv:
-        nt.assert_equal(len(r[(r >= a) & (r < b)]), 1)
+        nt.assert_equal(len(r[(r > a) & (r <= b)]), 1)
 

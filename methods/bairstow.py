@@ -12,7 +12,7 @@ https://en.wikipedia.org/wiki/Horner%27s_method
 from . import *
 
 
-def quadratic_root_divmod(p: Poly, r: np.complexfloating, rtol: float = 0, atol: float = 0) -> np.complexfloating:
+def quadratic_root_divmod(p: Poly, r, rtol: float = 0, atol: float = 0) -> tuple:
     """
     Bairstow's method
 
@@ -36,10 +36,10 @@ def quadratic_root_divmod(p: Poly, r: np.complexfloating, rtol: float = 0, atol:
         q, rd1 = divmod(p, pd)
         # print(rd1)
         rd2 = q % pd
-        md[1,1] = rd2.coef[1] * pd.coef[1] - rd2.coef[0]
-        md[1,0] = -rd2.coef[1]
-        md[0,1] = rd2.coef[1] * pd.coef[0]
-        md[0,0] = -rd2.coef[0]
+        md[1, 1] = rd2.coef[1] * pd.coef[1] - rd2.coef[0]
+        md[1, 0] = -rd2.coef[1]
+        md[0, 1] = rd2.coef[1] * pd.coef[0]
+        md[0, 0] = -rd2.coef[0]
         duv = -np.linalg.solve(md, rd1.coef if rd1.degree() == 1 else np.array([rd1.coef[0], 0]))
         pd.coef[:-1] += duv
     return (-pd.coef[1]/2 + np.sqrt(pd.coef[0] - pd.coef[1]**2 / 4) * 1j, q)

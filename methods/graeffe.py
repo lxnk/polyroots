@@ -9,7 +9,7 @@ from methods.bounds import _ratio as coef_ratio
 
 
 # TODO: Estimate multiplicity
-
+# TODO: Add renormalisation
 
 def dgiteration(p: Poly):
     """Dandelin–Graeffe iteration
@@ -42,7 +42,7 @@ def dgiteration(p: Poly):
     return q
 
 
-def roots_classical(p: Poly, d: int = 0, absval = False):
+def roots_classical(p: Poly, d: int = 0, absval: bool = False):
     # TODO: process with complex roots
     q = [p]
     for i in range(d):

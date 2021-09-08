@@ -2,7 +2,6 @@
 
 from . import *
 from numpy.polynomial import polynomial as pl
-import numpy as np
 from methods import graeffe
 from utils import sort_roots
 
