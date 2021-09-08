@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 """
+Descartes' rule of signs
+https://en.wikipedia.org/wiki/Descartes%27_rule_of_signs
+Read it! You get definite answer is var=1 or var=0.
+If, var = 2, then there is 0 or 2 positive roots
+If, var = 3, then there is 1 or 3 positive roots
+If, var = 3, then there is 0 or 2 or 4 positive roots, etc.
+
 Vincent's and related theorems
 https://en.wikipedia.org/wiki/Real-root_isolation#Vincent's_and_related_theorems
 
@@ -11,11 +18,12 @@ https://en.wikipedia.org/wiki/Real-root_isolation#Bisection_method
 """
 
 from . import *
-
+from methods.bounds import _ratio as coef_ratio
 
 def sign_var_num(p: Poly):
-    c = p.coef[p.coef != 0]
-    return sum(c[:-1]*c[1:] < 0)
+    # c = p.coef[p.coef != 0]
+    # return sum(c[:-1]*c[1:] < 0)
+    return sum(coef_ratio(p.coef) < 0)
 
 
 def root_intervals_cfrac(p: Poly):
@@ -66,7 +74,7 @@ def root_intervals_bisection(p: Poly, iv: tuple = (0, 1)) -> list:
     while poly_ival:
         a, b, q = poly_ival[-1]
         poly_ival.pop()
-        if q(0) == 0:
+        if p(a) == 0:
             q = q // Poly((0, 1))
             isol_ival.append((a, a))
         iq = q.copy()

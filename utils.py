@@ -3,14 +3,15 @@ import matplotlib.pyplot as plt
 
 
 def sort_roots(r):
-    delta = np.max(np.abs(r))
-    for i, z in enumerate(r):
-        delta = min(delta, np.min(np.abs(z - np.delete(r, i))))
-    r = np.sort(r)
-    for i, _ in enumerate(r[::-2]):
-        if np.abs(r[i]-r[i+1].conj()) < delta and \
-                r[i+1].imag < 0:
-            r[[i, i+1]] = r[[i+1, i]]
+    if len(r) > 1:
+        delta = np.max(np.abs(r))
+        for i, z in enumerate(r):
+            delta = min(delta, np.min(np.abs(z - np.delete(r, i))))
+        r = np.sort(r)
+        for i, _ in enumerate(r[::-2]):
+            if np.abs(r[i]-r[i+1].conj()) < delta and \
+                    r[i+1].imag < 0:
+                r[[i, i+1]] = r[[i+1, i]]
     return r
 
 
@@ -29,8 +30,8 @@ def show_roots(r, p):
     for z in r:
         if z.imag != 0:
             x = np.linspace(0, 1.2*z.imag)
-            ax.plot(x+z.real, np.real(p(z.real+x*1j)), '-',
-                    x+z.real, np.imag(p(z.real+x*1j)), '-')
+            ax.plot(x+z.real, np.real(p(z.real+x*1j)), ':',
+                    x+z.real, np.imag(p(z.real+x*1j)), ':')
         ax.plot(z.imag+z.real, 0, '+')
     ax.spines['bottom'].set_position('zero')
     ax.set_yscale('linear')
