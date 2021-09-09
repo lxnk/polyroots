@@ -52,10 +52,11 @@ def test_root_limit(polyr):
 def test_real_root_limit(polyc):
     re = np.sort(estimate_roots(polyc, 4, absval=True))
     rr = polyc.roots()
+    # print(rr[rr.imag == 0].real)
     r0 = np.max(np.sort(np.abs(rr)))
     rr = np.max(np.sort(rr[rr.imag == 0].real))
     # print(r0, rr)
-    # print(re, graeffe.root_limit(polyc, method="lagrange"))
+    # print(re, bounds.root_limit(polyc, method="lagrange"))
     nt.assert_array_less(re, bounds.root_limit(polyc, method="lagrange"))
 
     for m in bounds._root_limit_formula:

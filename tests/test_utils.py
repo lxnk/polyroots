@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 
-import numpy.testing as nt
+from . import *
+from utils import sort_roots
 import numpy as np
-import utils
 
 
-def test_sort_roots():
-    r = [1+1j, 1.001-1j, 2]
-    nt.assert_equal(np.sort(r), [1+1j, 1.001-1j, 2])
-    nt.assert_equal(utils.sort_roots(r), [1.001 - 1j, 1 + 1j, 2])
+@pytest.mark.parametrize("ri,rs", [([1+1j], [1+1j]),
+                                   ([1+1j, 1.001-1j, 2], [1.001 - 1j, 1 + 1j, 2])], ids=["r1", "r1c2"])
+def test_sort_roots(ri, rs):
+    # nt.assert_equal(np.sort(r), [1+1j, 1.001-1j, 2])
+    nt.assert_equal(sort_roots(ri), rs)
 
 
