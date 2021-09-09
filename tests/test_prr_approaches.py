@@ -3,6 +3,7 @@
 from tests.context import *
 from utils import unique as unique_in_sort
 import methods as mt
+from models import repos
 
 
 # @pytest.fixture(params=[(3, 5, 5, 2000, -5, 3)])
@@ -61,7 +62,7 @@ def test_positive_real_roots_graeffe_laguerre(polyc):
     nt.assert_allclose(np.sort(r), np.sort(rr))
 
 
-# # @pytest.mark.skip
+# @pytest.mark.skip
 # def test_positive_real_roots_graeffe_db():
 #     with open('../data/polydata.npy', 'rb') as f:
 #         poly2 = np.load(f, allow_pickle=True)

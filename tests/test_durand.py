@@ -4,6 +4,7 @@ from tests.context import *
 from methods import durand
 
 
+
 @pytest.fixture(params=[(-3, 4, 4, 2), (1, 2, 3, 1)], ids=["-3442", "1231"])
 def polyc(request):
     """Create polynomial out of the coefficients"""
