@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 """
 All complex roots at once:
 

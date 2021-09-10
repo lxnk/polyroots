@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 from tests.context import *
 from methods import aberth
 
