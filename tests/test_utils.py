@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import pytest
-import numpy.testing as nt
-from utils import sort_roots
+from tests.context import *
 
 
 @pytest.mark.parametrize("ri,rs", [([1+1j], [1+1j]),

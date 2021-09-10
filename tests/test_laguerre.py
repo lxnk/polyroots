@@ -2,11 +2,8 @@
 
 # -*- coding: utf-8 -*-
 
-import pytest
-import numpy.testing as nt
-from numpy.polynomial import Polynomial as Poly
+from tests.context import *
 from methods import laguerre
-from utils import sort_roots
 
 _coef = [(-3, 4, 4, 2), (1, 2, 3, 1)]
 _rini = [(0, -1+1j, -1-1j), (-2, -1+1j, -1-1j)]

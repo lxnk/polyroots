@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import pytest
-import numpy.testing as nt
-from numpy.polynomial import Polynomial as Poly
-from numpy.polynomial import polynomial as pl
+from tests.context import *
 from methods import vincent
 
 

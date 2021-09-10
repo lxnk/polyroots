@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import pytest
-import numpy.testing as nt
-from numpy.polynomial import Polynomial as Poly
+
+from tests.context import *
 from methods import aberth
-from utils import sort_roots
 
 
 @pytest.fixture(params=[(-3, 4, 4, 2), (1, 2, 3, 1)], ids=["-3442", "1231"])
