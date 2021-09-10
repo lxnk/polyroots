@@ -16,7 +16,8 @@ def sort_roots(r):
 
 
 def tol(t, rtol=0, atol=0):
-    return np.maximum(atol + rtol * t, np.spacing(t))
+    at = np.abs(t)
+    return np.maximum(atol + rtol * at, np.spacing(at))
 
 
 def show_roots(r, p):

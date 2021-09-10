@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 """
 All complex roots at once:
 
@@ -57,7 +56,7 @@ __all__ = ["aberth", "bairstow", "bounds",
 # methods.bounds.some_function()
 # methods.graeffe.some_function()
 
-from . import bounds, graeffe, householder, laguerre
+from . import bounds, graeffe, householder, laguerre, vincent
 
 # # This importing allows to access modules even if __init__.py is absent
 #
