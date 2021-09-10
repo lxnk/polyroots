@@ -4,7 +4,8 @@ https://en.wikipedia.org/wiki/Graeffe%27s_method
 
 """
 
-from . import *
+from numpy.polynomial import Polynomial as Poly
+import numpy as np
 from methods.bounds import _ratio as coef_ratio
 
 

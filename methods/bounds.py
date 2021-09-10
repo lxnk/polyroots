@@ -6,7 +6,8 @@ Bounds on all roots
 https://en.wikipedia.org/wiki/Geometrical_properties_of_polynomial_roots#Bounds_on_all_roots
 """
 
-from . import *
+from numpy.polynomial import Polynomial as Poly
+import numpy as np
 
 
 def _maxn(a: np.array, n: int = 1) -> np.array:

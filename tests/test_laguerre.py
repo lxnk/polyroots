@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from . import *
+# -*- coding: utf-8 -*-
+
+import pytest
+import numpy.testing as nt
+from numpy.polynomial import Polynomial as Poly
 from methods import laguerre
 from utils import sort_roots
 

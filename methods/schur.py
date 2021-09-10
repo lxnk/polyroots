@@ -3,7 +3,7 @@
 https://en.wikipedia.org/wiki/Graeffe%27s_method
 """
 
-from . import *
+from numpy.polynomial import Polynomial as Poly
 
 
 def stransform(p: Poly) -> Poly:

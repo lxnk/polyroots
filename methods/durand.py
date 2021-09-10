@@ -3,8 +3,9 @@
 https://en.wikipedia.org/wiki/Durand–Kerner_method
 """
 
-
-from . import *
+from numpy.polynomial import Polynomial as Poly
+import numpy as np
+from utils import tol
 
 
 def roots(p: Poly, rtol: float = 0, atol: float = 0):

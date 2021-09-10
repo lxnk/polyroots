@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from . import *
+import pytest
+import numpy.testing as nt
+from numpy.polynomial import Polynomial as Poly
 from numpy.polynomial import polynomial as pl
 from methods import graeffe
 from utils import sort_roots

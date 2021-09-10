@@ -3,7 +3,9 @@
 https://en.wikipedia.org/wiki/Laguerre%27s_method
 """
 
-from . import *
+from numpy.polynomial import Polynomial as Poly
+import numpy as np
+from utils import tol
 
 
 def roots(p: Poly, r: np.array, rtol: float = 0, atol: float = 0) -> np.array:

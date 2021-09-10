@@ -9,7 +9,9 @@ to calculate the coefficients of the quotient polynomial one may use Horner's me
 https://en.wikipedia.org/wiki/Horner%27s_method
 """
 
-from . import *
+from numpy.polynomial import Polynomial as Poly
+import numpy as np
+from utils import tol
 
 
 def quadratic_root_divmod(p: Poly, r, rtol: float = 0, atol: float = 0) -> tuple:
