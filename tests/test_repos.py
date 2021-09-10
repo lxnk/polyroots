@@ -6,7 +6,7 @@ import methods as mt
 from models import repos
 # from data.read_data import access_data as loadpoly
 
-# @pytest.fixture(params=[(3, 5, 5, 2000, -5, 3)])
+
 @pytest.fixture(params=[(-3, 4, 4, 2),
                         (1, 2, 3, 1),
                         (.25, .5, .751, .9),
@@ -19,13 +19,13 @@ def polyc(request):
     return Poly(request.param, domain=[0, 1], window=[0, 1])
 
 
-# @pytest.mark.skip
+# # @pytest.mark.skip
 # def test_positive_real_roots_decartes(polyc):
 #     rc = polyc.roots()
 #     print('\n', rc)
 #     rr = rc[(rc.imag == 0) & (rc.real >= 0)].real
 #     p = polyc.copy()
-#     print("n0=", vincent.sign_var_num(p))
+#     print("n0=", mt.vincent.sign_var_num(p))
 #     r = list()
 #     while vincent.sign_var_num(p) > 0:
 #         x = bounds.root_limit(p, method="lagrange", rproots=True)
@@ -95,3 +95,19 @@ def test_repos_roots_graeffe_lim_laguerre_db_p5():
             nt.assert_allclose(r, rr, rtol=1e-9, atol=1e-9)
 
 
+def test_repos_roots_vincent_db_p5():
+    with open('../data/polydata.npy', 'rb') as f:
+        for d in range(2, 5):
+            np.load(f)
+        poly5 = np.load(f)
+    i = 0
+    for p1 in poly5:
+        i += 1
+        p = Poly(p1['coef'])
+        rr = repos.roots_numpy(p)
+        rmax = mt.bounds.root_limit(p, method="lagrange", rproots=True)
+        ri = mt.vincent.root_intervals_bisection(p, iv=[(0, rmax)])
+
+        print()
+        print("ri  =", ri)
+        print("rr =", rr)
