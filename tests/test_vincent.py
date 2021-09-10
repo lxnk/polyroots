@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from . import *
-from numpy.polynomial import polynomial as pl
+from tests.context import *
 from methods import vincent
 
 

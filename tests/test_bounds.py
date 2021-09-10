@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from . import *
-from numpy.polynomial import polynomial as pl
-import numpy as np
+from tests.context import *
 from methods import bounds
 from methods.graeffe import roots_classical as estimate_roots
 

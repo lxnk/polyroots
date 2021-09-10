@@ -11,7 +11,9 @@ https://en.wikipedia.org/wiki/Newton%27s_method
 See https://en.wikipedia.org/wiki/Householder%27s_method#Method for details
 """
 
-from . import *
+from numpy.polynomial import Polynomial as Poly
+import numpy as np
+from utils import tol
 
 
 def roots(p: Poly, r: np.array, d: int = 1, rtol: float = 0, atol: float = 0) -> np.array:

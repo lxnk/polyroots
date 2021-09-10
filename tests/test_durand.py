@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from . import *
+from tests.context import *
 from methods import durand
-from utils import sort_roots
+
 
 @pytest.fixture(params=[(-3, 4, 4, 2), (1, 2, 3, 1)], ids=["-3442", "1231"])
 def polyc(request):

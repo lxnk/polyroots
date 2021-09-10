@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from . import *
+# -*- coding: utf-8 -*-
+
+from tests.context import *
 from methods import householder
-from utils import sort_roots
 
 _coef = [(-3, 4, 4, 2), (1, 2, 3, 1)]
 _rini = [(0, -1+1j, -1-1j), (-2, -1+1j, -1-1j)]

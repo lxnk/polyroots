@@ -17,7 +17,8 @@ Bisection method.
 https://en.wikipedia.org/wiki/Real-root_isolation#Bisection_method
 """
 
-from . import *
+from numpy.polynomial import Polynomial as Poly
+import numpy as np
 from methods.bounds import _ratio as coef_ratio
 
 

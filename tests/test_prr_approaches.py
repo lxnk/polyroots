@@ -1,8 +1,8 @@
-from . import *
-from utils import sort_roots
+# -*- coding: utf-8 -*-
+
+from tests.context import *
 from utils import unique as unique_in_sort
-import numpy as np
-from methods import householder, bounds, vincent, graeffe, laguerre
+import methods as mt
 
 
 # @pytest.fixture(params=[(3, 5, 5, 2000, -5, 3)])
@@ -43,8 +43,8 @@ def test_positive_real_roots_graeffe_householder(polyc):
     rc = polyc.roots()
     # print('\n', rc)
     rr = rc[(rc.imag == 0) & (rc.real >= 0)].real
-    r = graeffe.roots_classical(polyc, d=0, absval=True)
-    r = householder.roots(polyc, r, d=1)
+    r = mt.graeffe.roots_classical(polyc, d=0, absval=True)
+    r = mt.householder.roots(polyc, r, d=1)
     r = np.unique(r[r >= 0])
     # print(r, rr)
     nt.assert_allclose(np.sort(r), np.sort(rr))
@@ -54,16 +54,16 @@ def test_positive_real_roots_graeffe_laguerre(polyc):
     rc = polyc.roots()
     # print('\n', rc)
     rr = rc[(rc.imag == 0) & (rc.real >= 0)].real
-    r = graeffe.roots_classical(polyc, d=0, absval=True)
-    r = laguerre.roots(polyc, r)
+    r = mt.graeffe.roots_classical(polyc, d=0, absval=True)
+    r = mt.laguerre.roots(polyc, r)
     r = np.unique(r[(r.imag == 0) & (r.real >= 0)].real)
     # print(r, rr)
     nt.assert_allclose(np.sort(r), np.sort(rr))
 
 
-# @pytest.mark.skip
+# # @pytest.mark.skip
 # def test_positive_real_roots_graeffe_db():
-#     with open('data/polydata.npy', 'rb') as f:
+#     with open('../data/polydata.npy', 'rb') as f:
 #         poly2 = np.load(f, allow_pickle=True)
 #         poly3 = np.load(f, allow_pickle=True)
 #         poly4 = np.load(f, allow_pickle=True)
@@ -84,11 +84,11 @@ def test_positive_real_roots_graeffe_laguerre(polyc):
 #         # print(r)
 #         nt.assert_allclose(r1, r0, rtol=2e-5, atol=2e-5)
 #         rr = np.sort(np.unique(r1[(r1.imag == 0) & (r1.real >= 0)].real))
-#         r = graeffe.roots_classical(p, d=0, absval=True)
-#         rmax = bounds.root_limit(p, method="lagrange", rproots=True)
+#         r = mt.graeffe.roots_classical(p, d=0, absval=True)
+#         rmax = mt.bounds.root_limit(p, method="lagrange", rproots=True)
 #         r = np.append(r[r < rmax], rmax)
-#         # r = householder.roots(p, r, d=1)
-#         r = laguerre.roots(p, r, rtol=1e-6, atol=1e-6)
+#         # r = mt.householder.roots(p, r, d=1)
+#         r = mt.laguerre.roots(p, r, rtol=1e-6, atol=1e-6)
 #         r = unique_in_sort(np.sort(r[r >= 0]), rtol=1e-6, atol=1e-6)
 #         print("r  =", r)
 #         print("rr =", rr)

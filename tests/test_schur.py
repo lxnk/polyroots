@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from . import *
-from numpy.polynomial import polynomial as pl
+from tests.context import *
 from methods import schur
-import numpy as np
 
 
 @pytest.fixture(params=[(-.6, .2+.3j, .2-.3j, -1+.1j, -1-.1j, .2)], ids=["r-623"])

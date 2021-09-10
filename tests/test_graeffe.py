@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from . import *
-from numpy.polynomial import polynomial as pl
+from tests.context import *
 from methods import graeffe
-from utils import sort_roots
 
 
 @pytest.fixture(params=[(-3, 4, -4, 2)], ids=["c-3442"])
