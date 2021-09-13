@@ -14,18 +14,16 @@ def assert_array_almost_equal_nulp(x, y, nulp=1):
     nt.assert_array_almost_equal_nulp(x.p, y.p, nulp=nulp)
 
 
-def assert_array_almost_equal_nulp(x, y, nulp=1):
-    assert x.k == y.k
-    nt.assert_array_almost_equal_nulp(x.r, y.r, nulp=nulp)
-    nt.assert_array_almost_equal_nulp(x.p, y.p, nulp=nulp)
-
-
 def assert_allclose(actual, desired, rtol=1e-07, atol=0, equal_nan=True, err_msg='', verbose=True):
     assert actual.k == desired.k
     nt.assert_array_almost_equal_nulp(actual.r, desired.r, rtol=rtol, atol=atol, equal_nan=equal_nan, err_msg=err_msg,
                                       verbose=verbose)
     nt.assert_array_almost_equal_nulp(actual.p, desired.p, rtol=rtol, atol=atol, equal_nan=equal_nan, err_msg=err_msg,
                                       verbose=verbose)
+
+
+def asrnumber(c: complex = 1):
+    return Rnumber(np.log(np.absolute(c)), np.angle(c)/np.pi, 0)
 
 
 class Rnumber:
@@ -60,15 +58,18 @@ class Rnumber:
         self.p = self.p % 2
 
     def __repr__(self):
-        return f"Rnum({self.r}, {self.p}, {self.k})"
+        return f"Rn({self.r}, {self.p}, {self.k})"
 
     def __format__(self, format_spec):
-        return f"2{str(self.k).translate(self._superscript_mapping)}⋅({self.r} + 𝜄𝜋⋅{self.p})"
-        # return f"2{self.k}⋅({self.r} + 𝜄𝜋⋅{self.p})"
+        if format_spec == '':
+            return f"2{str(self.k).translate(self._superscript_mapping)}⋅({self.r} + 𝜄𝜋⋅{self.p})"
+        elif format_spec == 'unicode':
+            return f"2{str(self.k).translate(self._superscript_mapping)}⋅({self.r} + 𝜄⋅𝜋⋅{self.p})"
+        elif format_spec == 'ascii':
+            return f"2**{self.k}*({self.r} + i*pi*{self.p})"
 
     def __str__(self):
-        return f"2{str(self.k).translate(self._superscript_mapping)}⋅({self.r} + 𝜄𝜋⋅{self.p})"
-        # return f"2**{self.k} * ({self.r} + i*pi * {self.p} )"
+        return f"2{str(self.k).translate(self._superscript_mapping)}⋅[{self.r} + 𝜄𝜋⋅{self.p}]"
 
     @staticmethod
     def _factor(k1: np.integer, k2: np.integer, dk: int = 0):
@@ -98,6 +99,7 @@ class Rnumber:
         c = 1 + np.exp(2 ** k * c)
         r += np.log(np.absolute(c))
         p += np.angle(c) / np.pi
+        p %= 2
         return Rnumber(r, p, k)
 
     def __add__(self, other):
@@ -105,3 +107,22 @@ class Rnumber:
 
     def __sub__(self, other):
         return self._add_renorm(other, sub=True)
+
+    def __neg__(self):
+        return Rnumber(self.r, (self.p + 1) % 2, self.k)
+
+    # def __pos__(self):
+    #     return NotImplemented
+
+    def __abs__(self):
+        return Rnumber(self.r, 0, self.k)
+
+    def __complex__(self):
+        return complex(np.exp(self.r + 1j * np.pi * self.p))
+
+    def __float__(self):
+        pp = np.round(self.p)
+        nf = np.exp(self.r)
+        if pp == 1:
+            nf *= -1
+        return float(nf)
