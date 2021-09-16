@@ -23,7 +23,14 @@ def assert_allclose(actual, desired, rtol=1e-07, atol=0, equal_nan=True, err_msg
 
 
 def asrnumber(c: complex = 1):
-    return Rnumber(np.log(np.absolute(c)), np.angle(c)/np.pi, 0)
+    if c.imag == 0:
+        return rnumber(np.log(np.absolute(c)), 0 if c.real > 0 else 1, 0)
+    else:
+        return rnumber(np.log(np.absolute(c)), np.angle(c)/np.pi, 0)
+
+
+def rnumber(r: float = 0, p: float = 0, k: int = 0):
+    return Rnumber(np.float64(r), np.float64(p), np.int32(k))
 
 
 class Rnumber:
@@ -51,10 +58,10 @@ class Rnumber:
         "9": "⁹"
     })
 
-    def __init__(self, r: float = 0, p: float = 0, k: float = 0):
-        self.r = np.float64(r)
-        self.p = np.float64(p)
-        self.k = np.int32(k)
+    def __init__(self, r: np.floating = 0, p: np.floating = 0, k: np.integer = 0):
+        self.r = r
+        self.p = p
+        self.k = k
         self.p = self.p % 2
 
     def __repr__(self):
@@ -79,37 +86,43 @@ class Rnumber:
         return k, a, b
 
     def __mul__(self, other):
-        k, a, b = self._factor(self.k, other.k, 1)
-        return Rnumber(self.r / a + other.r / b, self.p / a + other.p / b, k)
+        if issubclass(type(other), Rnumber):
+            k, a, b = self._factor(self.k, other.k, 1)
+            return Rnumber(self.r / a + other.r / b, self.p / a + other.p / b, k)
+        else:
+            r = np.log(np.absolute(other)) / 2 ** self.k
+            p = np.angle(other) / np.pi / 2 ** self.k
+            return Rnumber(self.r + r, self.p + p, self.k)
 
-    def _add_renorm(self, other, sub: bool = False):
+    def _add_renorm(self, other):
         k, a, b = self._factor(self.k, other.k, 0)
-        if sub:
-            dp = 1
-        else:
-            dp = 0
         if self.r / a >= other.r / b:
-            c = other.r / b - self.r / a + 1j * np.pi * ((other.p + dp) / b - self.p / a)
-            r = self.r
-            p = self.p
+            c = other.r / b - self.r / a + 1j * np.pi * (other.p / b - self.p / a)
+            r = self.r / a
+            p = self.p / a
         else:
-            c = self.r / a - other.r / b + 1j * np.pi * (self.p / a - (other.p + dp) / b)
-            r = other.r
-            p = other.p
-        c = 1 + np.exp(2 ** k * c)
-        r += np.log(np.absolute(c))
-        p += np.angle(c) / np.pi
+            c = self.r / a - other.r / b + 1j * np.pi * (self.p / a - other.p / b)
+            r = other.r / b
+            p = other.p / b
+        c = 1 + np.exp((2 ** k) * c)
+        r += np.log(np.absolute(c)) / 2**k
+        p += np.angle(c) / np.pi / 2**k
         p %= 2
         return Rnumber(r, p, k)
 
     def __add__(self, other):
+        if not issubclass(type(other), Rnumber):
+            other = asrnumber(other)
         return self._add_renorm(other)
 
     def __sub__(self, other):
-        return self._add_renorm(other, sub=True)
+        if not issubclass(type(other), Rnumber):
+            other = asrnumber(other)
+        return self._add_renorm(-other)
+        # , sub=True)
 
     def __neg__(self):
-        return Rnumber(self.r, (self.p + 1) % 2, self.k)
+        return Rnumber(self.r, (self.p + 1/2**self.k) % 2, self.k)
 
     # def __pos__(self):
     #     return NotImplemented
@@ -126,3 +139,14 @@ class Rnumber:
         if pp == 1:
             nf *= -1
         return float(nf)
+
+    def __rmul__(self, other):
+        r = np.log(np.absolute(other)) / 2 ** self.k
+        p = np.angle(other) / np.pi / 2 ** self.k
+        return Rnumber(self.r + r, self.p + p, self.k)
+
+    def __radd__(self, other):
+        return asrnumber(other)._add_renorm(self)
+
+    def __rsub__(self, other):
+        return asrnumber(other)._add_renorm(-self)
