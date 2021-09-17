@@ -114,11 +114,30 @@ def test_repos_roots_vincent_db_p5():
         p = Poly(p1['coef'])
         rr = repos.roots_numpy(p)
         ri = repos.roots_graeffe_lim_vincent(p, rtol=1e-9, atol=1e-9)
+        rn = np.asarray(ri)
         if len(ri) == len(rr):
-            pass
-            # nt.assert_allclose(r, rr, rtol=1e-9, atol=1e-9)
+            nt.assert_array_less(rn[:, 0], rr)
+            nt.assert_array_less(rr, rn[:, 1])
         else:
             print()
             print("i  =", i)
             print("ri =", ri)
             print("rr =", rr)
+
+
+def test_repos_roots_vincent_newton_db_p5():
+    with open('../data/polydata.npy', 'rb') as f:
+        for d in range(2, 5):
+            np.load(f)
+        poly5 = np.load(f)
+    i = 0
+    for p1 in poly5:
+        i += 1
+        p = Poly(p1['coef'])
+        rr = repos.roots_numpy(p)
+        print()
+        print(rr)
+        rx = repos.roots_graeffe_lim_vincent_newton(p, rtol=1e-9, atol=1e-9)
+        # nt.assert_allclose(rx, rr, rtol=1e-3, atol=1e-15)
+
+        print(rx)

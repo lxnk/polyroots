@@ -38,7 +38,6 @@ def roots_graeffe_laguerre(p: Poly, rtol: float = 0, atol: float = 0) -> np.arra
 def roots_graeffe_lim_laguerre(p: Poly, rtol: float = 0, atol: float = 0) -> np.array:
     r = graeffe.roots_classical(p, d=0, absval=True)
     rmax = bounds.root_limit(p, method="lagrange", rproots=True)
-    # print("rmax  =", rmax)
     r = np.append(r[r < rmax], rmax)
     r = laguerre.roots(p, r, rtol=rtol, atol=atol)
     r = unique_in_sort(np.sort(r[(r.imag == 0) & (r.real >= 0)].real), rtol=rtol, atol=atol)
@@ -49,7 +48,6 @@ def roots_graeffe_lim_vincent(p: Poly, rtol: float = 0, atol: float = 0) -> np.a
     r = graeffe.roots_classical(p, d=0, absval=True)
     r = np.sort(r)
     rmax = bounds.root_limit(p, method="lagrange", rproots=True)
-    # print("rmax  =", rmax)
     r = np.append(r[r < rmax], rmax)
     sr = np.insert(np.append(np.sqrt(r[:-1] * r[1:]), rmax), 0, 0)
     iv = list()
@@ -57,6 +55,27 @@ def roots_graeffe_lim_vincent(p: Poly, rtol: float = 0, atol: float = 0) -> np.a
         iv.append(it)
     r = vincent.root_intervals_bisection(p, iv=iv)
     r.sort()
-    # r = laguerre.roots(p, r, rtol=rtol, atol=atol)
-    # r = unique_in_sort(np.sort(r[(r.imag == 0) & (r.real >= 0)].real), rtol=rtol, atol=atol)
+    return r
+
+
+def roots_graeffe_lim_vincent_newton(p: Poly, rtol: float = 0, atol: float = 0) -> np.array:
+    r = graeffe.roots_classical(p, d=0, absval=True)
+    r = np.sort(r)
+    rmax = bounds.root_limit(p, method="lagrange", rproots=True)
+    # print("rmax  =", rmax)
+    r = np.append(r[r < rmax], rmax)
+    sr = np.insert(np.append(np.sqrt(r[:-1] * r[1:]), rmax), 0, 0)
+    iv = list()
+    for it in pairwise(sr):
+        iv.append(it)
+    ri = vincent.root_intervals_bisection(p, iv=iv)
+    ri.sort()
+    print(ri)
+    # r0 = list(map(lambda i: np.sqrt(np.prod(i)), ri))
+    # r0 = list(map(lambda i: i[1], ri))
+    r0 = list(map(lambda i: np.sum(i) / 2, ri))
+
+    print(r0)
+    # r = householder.roots(p, r0, d=2, rtol=rtol, atol=atol)
+    # r.sort()
     return r
