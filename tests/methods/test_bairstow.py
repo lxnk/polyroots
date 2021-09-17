@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from tests.context import *
+from .context import *
 from methods import bairstow
 
 _root = [(1, -1+1j, -1-1j, 7, 3), (-2, -2+3j, -2-3j, 2, 7)]

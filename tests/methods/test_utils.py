@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from tests.context import *
+from .context import *
 
 
 @pytest.mark.parametrize("ri,rs", [([1+1j], [1+1j]),

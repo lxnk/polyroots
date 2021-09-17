@@ -1,6 +1,15 @@
 # -*- coding: utf-8 -*-
 
-from tests.context import *
+# from tests.context import *
+
+import pytest
+import numpy.testing as nt
+from numpy.polynomial import polynomial as pl
+import numpy as np
+
+from numpy.polynomial import Polynomial as Poly
+from utils import sort_roots
+
 from utils import unique as unique_in_sort
 import methods as mt
 from models import repos

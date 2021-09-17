@@ -9,6 +9,9 @@ import numpy as np
 from methods.bounds import _ratio as coef_ratio
 
 
+
+
+
 # TODO: Estimate multiplicity
 # TODO: Add renormalisation
 
@@ -77,3 +80,23 @@ def roots_tangential(p: Poly, d: int, eps: float = 1e-5):
     re = -coef_ratio(pe.coef)
     r = -2 ** d * eps * r / (re - r)
     return r
+
+
+def dgiteration2(p: Poly):
+    """Dandelin–Graeffe iteration
+    Polynomial `q(x)` has root, which are the squares of the roots of polynomial `p(x)`
+
+    .. math::
+        p(x)   = \\sum_{k=0} ^n a_k x^k
+    .. math::
+        q(x^2)   = p(-x)p(x)
+    .. math::
+        q(x)   = \\sum_{k=0} ^n b_k x^k
+    .. math::
+        b_k = 2 (-1)^k a_k^2 + \\sum_{i=1} ^{min(k,n-k)} (-1)^{k-i}a_{k-i}a_{k+i}
+
+    New roots are at the larger distance
+
+
+    """
+    pass

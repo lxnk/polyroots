@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from tests.context import *
+from .context import *
 from methods import bounds
 from methods.graeffe import roots_classical as estimate_roots
 
