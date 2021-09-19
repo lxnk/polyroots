@@ -58,7 +58,7 @@ def roots_graeffe_lim_vincent(p: Poly, rtol: float = 0, atol: float = 0) -> np.a
     return r
 
 
-def roots_graeffe_lim_vincent_newton(p: Poly, rtol: float = 0, atol: float = 0) -> np.array:
+def roots_graeffe_lim_vincent_halley(p: Poly, rtol: float = 0, atol: float = 0) -> np.array:
     r = graeffe.roots_classical(p, d=0, absval=True)
     r = np.sort(r)
     rmax = bounds.root_limit(p, method="lagrange", rproots=True)
@@ -68,14 +68,22 @@ def roots_graeffe_lim_vincent_newton(p: Poly, rtol: float = 0, atol: float = 0) 
     iv = list()
     for it in pairwise(sr):
         iv.append(it)
-    ri = vincent.root_intervals_bisection(p, iv=iv)
+    ri = vincent.root_intervals_bisection(p, iv=iv, nozerod=True)
     ri.sort()
-    print(ri)
-    # r0 = list(map(lambda i: np.sqrt(np.prod(i)), ri))
-    # r0 = list(map(lambda i: i[1], ri))
+    # print(ri)
+    # pd = p.deriv()
+    # for i in ri:
+    #     if p(i[0]) * p(i[1]) > 0:
+    #         print("+", end='')
+    #     else:
+    #         print("-", end='')
+    #     if pd(i[0]) * pd(i[1]) > 0:
+    #         print("+", end='')
+    #     else:
+    #         print("-", end='')
+    #     print(",", end='')
+    # print()
     r0 = list(map(lambda i: np.sum(i) / 2, ri))
-
-    print(r0)
-    # r = householder.roots(p, r0, d=2, rtol=rtol, atol=atol)
+    r = householder.roots(p, r0, d=2, rtol=rtol, atol=atol)
     # r.sort()
     return r

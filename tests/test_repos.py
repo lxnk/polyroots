@@ -135,9 +135,13 @@ def test_repos_roots_vincent_newton_db_p5():
         i += 1
         p = Poly(p1['coef'])
         rr = repos.roots_numpy(p)
-        print()
-        print(rr)
-        rx = repos.roots_graeffe_lim_vincent_newton(p, rtol=1e-9, atol=1e-9)
-        # nt.assert_allclose(rx, rr, rtol=1e-3, atol=1e-15)
-
-        print(rx)
+        # print()
+        # print(rr)
+        rx = repos.roots_graeffe_lim_vincent_halley(p, rtol=1e-9, atol=1e-9)
+        if len(rx) == len(rr):
+            nt.assert_allclose(rx, rr, rtol=1e-3, atol=1e-15)
+        else:
+            print()
+            print("i  =", i)
+            print("rx =", rx)
+            print("rr =", rr)

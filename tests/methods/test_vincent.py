@@ -48,6 +48,7 @@ def test_root_intervals_bisection(polyr):
         nt.assert_equal(len(r[(r > a) & (r <= b)]), 1)
 
 
+@pytest.mark.skip
 def test_polyscale():
     # a, b = (235.8206580766257, 2424733.74139227)
     # p = Poly([7.868426686580592e-12, -4.2171839126289425e-09, 4.420539641958822e-07,
