@@ -10,7 +10,7 @@ from more_itertools import pairwise
 
 def roots_numpy(p: Poly) -> np.array:
     r = p.roots()
-    return r[(r.imag == 0) & (r.real >= 0)].real
+    return np.sort(np.unique(r[(r.imag == 0) & (r.real >= 0)].real))
 
 
 def roots_graeffe_householder(p: Poly, d: int, rtol: float = 0, atol: float = 0) -> np.array:
@@ -58,32 +58,26 @@ def roots_graeffe_lim_vincent(p: Poly, rtol: float = 0, atol: float = 0) -> np.a
     return r
 
 
-def roots_graeffe_lim_vincent_halley(p: Poly, rtol: float = 0, atol: float = 0) -> np.array:
+def roots_graeffe_lim_vincent_newton(p: Poly, rtol: float = 0, atol: float = 0) -> np.array:
     r = graeffe.roots_classical(p, d=0, absval=True)
     r = np.sort(r)
-    rmax = bounds.root_limit(p, method="lagrange", rproots=True)
-    # print("rmax  =", rmax)
-    r = np.append(r[r < rmax], rmax)
+    rmax1 = bounds.root_limit(p, method="lagrange", rproots=True)
+    rmax = bounds.root_limit(p, method="zassenhaus", rproots=True)
+    r = np.append(r[r < rmax1], rmax)
     sr = np.insert(np.append(np.sqrt(r[:-1] * r[1:]), rmax), 0, 0)
     iv = list()
     for it in pairwise(sr):
         iv.append(it)
     ri = vincent.root_intervals_bisection(p, iv=iv, nozerod=True)
     ri.sort()
-    # print(ri)
-    # pd = p.deriv()
-    # for i in ri:
-    #     if p(i[0]) * p(i[1]) > 0:
-    #         print("+", end='')
-    #     else:
-    #         print("-", end='')
-    #     if pd(i[0]) * pd(i[1]) > 0:
-    #         print("+", end='')
-    #     else:
-    #         print("-", end='')
-    #     print(",", end='')
-    # print()
-    r0 = list(map(lambda i: np.sum(i) / 2, ri))
-    r = householder.roots(p, r0, d=2, rtol=rtol, atol=atol)
-    # r.sort()
+    r0 = list()
+    r1 = list()
+    for e in ri:
+        if e[0] == e[1]:
+            r0.append(e[0])
+        else:
+            r1.append(np.sum(e) / 2)
+    r1 = householder.roots(p, r1, d=1, rtol=rtol, atol=atol)
+    r = np.append(np.array(r0), r1)
+    r.sort()
     return r

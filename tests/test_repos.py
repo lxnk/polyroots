@@ -137,11 +137,46 @@ def test_repos_roots_vincent_newton_db_p5():
         rr = repos.roots_numpy(p)
         # print()
         # print(rr)
-        rx = repos.roots_graeffe_lim_vincent_halley(p, rtol=1e-9, atol=1e-9)
+        # if i == 12:
+        #     print(p)
+        rx = repos.roots_graeffe_lim_vincent_newton(p, rtol=1e-9, atol=1e-9)
         if len(rx) == len(rr):
-            nt.assert_allclose(rx, rr, rtol=1e-3, atol=1e-15)
+            # if not np.allclose(rx, rr, rtol=1e-3, atol=1e-4):
+            #     print()
+            #     print("i  =", i)
+            #     print("rx =", rx)
+            #     print("rr =", rr)
+            nt.assert_allclose(rx, rr, rtol=1e-3, atol=1e-4)
         else:
             print()
             print("i  =", i)
             print("rx =", rx)
+            print("px =", p(rx))
             print("rr =", rr)
+            print("pr =", p(rr))
+
+
+def test_repos_roots_vincent_newton_db_p26():
+    with open('../data/polydata.npy', 'rb') as f:
+        for d in range(2, 7):
+            poly = np.load(f)
+            i = 0
+            for p1 in poly:
+                i += 1
+                p = Poly(p1['coef'])
+
+                if d == 6:
+                    if i == 42:
+                        print(p)
+                rr = repos.roots_numpy(p)
+                rx = repos.roots_graeffe_lim_vincent_newton(p, rtol=1e-9, atol=1e-9)
+                if len(rx) == len(rr):
+                    nt.assert_allclose(rx, rr, rtol=1e-3, atol=1e-4)
+                else:
+                    print()
+                    print("d =", d, ", i =", i)
+                    print("Polynomial = ", p)
+                    print("Newton roots  =", rx)
+                    print("Newton values =", p(rx))
+                    print("Matlab roots  =", rr)
+                    print("Matlab values =", p(rr))
