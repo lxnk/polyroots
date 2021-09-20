@@ -22,13 +22,14 @@ p = access_data()
 print(len(p[2]), len(p[2]['coef']),
       len(p[2][7]), len(p[2][7]['coef']), len(p[2]['coef'][7]), len(p[2]['root'][7]))
 
+print(len(p[2])+len(p[3])+len(p[4])+len(p[5])+len(p[6]))
 # print(len(p2), len(p2['coef']),
 #       len(p2[7]), len(p2[7]['coef']), len(p2['coef'][7]), len(p2['root'][7]))
 
 # print(len(p5), len(p5['coef']),
 #       len(p5[7]), len(p5[7]['coef']), len(p5['coef'][7]), len(p5['root'][7]))
 #
-# print(len(p2), len(p3), len(p4), len(p5), len(p6))
+print(len(p[2]), len(p[3]), len(p[4]), len(p[5]), len(p[6]))
 #
 # pl = Poly(p4[7]['coef'])
 # print(pl)

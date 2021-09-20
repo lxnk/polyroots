@@ -11,7 +11,7 @@ import numpy as np
 
 
 def _maxn(a: np.array, n: int = 1) -> np.array:
-    return a[np.argpartition(-a, n)[:n]]
+    return a[np.argpartition(-a, n-1)[:n]]
 
 
 def _norm(a: np.array) -> np.array:

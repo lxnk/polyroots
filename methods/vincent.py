@@ -26,6 +26,12 @@ def sign_var_num(p: Poly):
     return sum(coef_ratio(p.coef) < 0)
 
 
+def sign_var_num_oniv(p: Poly, a: float, b: float):
+    q = p(Poly((a, b - a)))
+    q.coef = q.coef[::-1]
+    return sign_var_num(q(Poly((1, 1))))
+
+
 def root_intervals_cfrac(p: Poly):
     """Continued fraction method
     Starts from intervals [-inf..0] and [0..+inf]"""
@@ -65,7 +71,7 @@ def root_intervals_cfrac(p: Poly):
     return isol_ival
 
 
-def root_intervals_bisection(p: Poly, iv: list = [(0, 1)]) -> list:
+def root_intervals_bisection(p: Poly, iv: list = [(0, 1)], nozerod: bool = False) -> list:
     """Bisection method
     Starts from the interval [0..1]
 
@@ -73,17 +79,24 @@ def root_intervals_bisection(p: Poly, iv: list = [(0, 1)]) -> list:
     """
     poly_ival = iv
     isol_ival = []
+    if nozerod:
+        pd = p.deriv()
     while poly_ival:
         a, b = poly_ival[-1]
         poly_ival.pop()
         if p(a) == 0:
-            p = p // Poly((a, 1))
+            p = p // Poly((-a, 1))
             isol_ival.append((a, a))
-        q = p(Poly((b, a-b)))
-        q.coef = q.coef[::-1]
-        v = sign_var_num(q(Poly((1, 1))))
+        # q = p(Poly((a, b-a)))
+        # q.coef = q.coef[::-1]
+        # v = sign_var_num(q(Poly((1, 1))))
+        v = sign_var_num_oniv(p, a, b)
         if v == 1:
-            isol_ival.append((a, b))
+            if nozerod and sign_var_num_oniv(pd, a, b) > 0:
+                poly_ival.append((a, (a + b) / 2))
+                poly_ival.append(((a + b) / 2, b))
+            else:
+                isol_ival.append((a, b))
         elif v > 1:
             poly_ival.append((a, (a+b)/2))
             poly_ival.append(((a+b)/2, b))
