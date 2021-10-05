@@ -86,6 +86,7 @@ def root_intervals_bisection(p: Poly, iv: list = [(0, 1)], nozerod: bool = False
         poly_ival.pop()
         if p(a) == 0:
             p = p // Poly((-a, 1))
+            pd = p.deriv()
             isol_ival.append((a, a))
         # q = p(Poly((a, b-a)))
         # q.coef = q.coef[::-1]
